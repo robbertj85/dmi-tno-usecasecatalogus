@@ -78,6 +78,26 @@ zoomt. Eigen force-layout in `src/lib/force-graph.ts` — geen 3D-dependency.
 Labels worden geplaatst met een greedy botsingscontrole (hubs eerst, daarna de
 best verbonden use cases); een weggelaten label komt terug bij hover.
 
+## Deployment
+
+Het project staat op Vercel maar levert voorlopig alleen preview-deployments
+op. `vercel.json` zet automatische deployments van `main` uit:
+
+```json
+{ "git": { "deploymentEnabled": { "main": false } } }
+```
+
+Werken doe je dus op een branch — `preview` is daarvoor bedoeld. Elke push
+daarheen levert een preview-URL op; `main` levert niets op.
+
+Let op: Vercel maakt van de **eerste** deployment van een project altijd een
+productie-deployment, ongeacht de branch en ongeacht `--target=preview`. Dat is
+een bootstrap-regel die je niet kunt omzeilen; daarna gedragen branch-pushes
+zich wel als preview.
+
+Zodra `main` naar productie mag: haal het `git`-blok uit `vercel.json` (of zet
+het op `true`).
+
 ## Routes
 
 | Route | Inhoud |
