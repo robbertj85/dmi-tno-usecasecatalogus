@@ -5,8 +5,10 @@
  * is random at runtime:
  *
  *  1. A domain motif: flow lines for mobiliteit, a lattice for energie,
- *     contour bands for klimaatadaptatie, cells for gezondheid. Seeded from
- *     the use-case id, so every card is unique but recognisably of its domein.
+ *     contour bands for klimaatadaptatie, cells for gezondheid, open loops
+ *     for circulariteit, ripples for veiligheid and branching stems for
+ *     milieu, natuur & ecologie. Seeded from the use-case id, so every card
+ *     is unique but recognisably of its domein.
  *  2. A beleidsdomein fingerprint: a radar silhouette over the 8 policy
  *     domains, lit where the use case touches one, with a centre dot sized by
  *     how many niveaus it spans. Use cases working on the same vraagstuk end
@@ -105,6 +107,74 @@ function cells(rand: Rand): { cx: number; cy: number; r: number }[] {
   return out;
 }
 
+/** Circulariteit — open loops that almost close: material going round again. */
+function loops(rand: Rand): string[] {
+  const paths: string[] = [];
+  const count = rand.int(4, 6);
+  for (let i = 0; i < count; i++) {
+    const cx = rand.between(10, W - 10);
+    const cy = rand.between(6, H - 6);
+    const r = rand.between(14, 40);
+    const start = rand.between(0, Math.PI * 2);
+    const sweep = rand.between(Math.PI * 1.15, Math.PI * 1.8);
+    const x0 = cx + Math.cos(start) * r;
+    const y0 = cy + Math.sin(start) * r;
+    const x1 = cx + Math.cos(start + sweep) * r;
+    const y1 = cy + Math.sin(start + sweep) * r;
+    paths.push(
+      `M ${r1(x0)} ${r1(y0)} A ${r1(r)} ${r1(r)} 0 ${sweep > Math.PI ? 1 : 0} 1 ${r1(
+        x1
+      )} ${r1(y1)}`
+    );
+  }
+  return paths;
+}
+
+/** Veiligheid — ripples spreading from a few points, like a signal or a beacon. */
+function ripples(rand: Rand): { cx: number; cy: number; r: number }[] {
+  const out: { cx: number; cy: number; r: number }[] = [];
+  const centres = rand.int(2, 3);
+  for (let i = 0; i < centres; i++) {
+    const cx = (W / (centres + 1)) * (i + 1) + rand.between(-40, 40);
+    const cy = rand.between(10, H - 10);
+    const rings = rand.int(3, 5);
+    const step = rand.between(9, 14);
+    for (let k = 1; k <= rings; k++) {
+      out.push({ cx: r1(cx), cy: r1(cy), r: r1(step * k) });
+    }
+  }
+  return out;
+}
+
+/** Milieu, natuur & ecologie — stems growing up from the bottom edge with twigs. */
+function branches(rand: Rand): string[] {
+  const paths: string[] = [];
+  const stems = rand.int(2, 4);
+  for (let i = 0; i < stems; i++) {
+    const x0 = (W / (stems + 1)) * (i + 1) + rand.between(-30, 30);
+    const x2 = x0 + rand.between(-50, 50);
+    const x1 = (x0 + x2) / 2 + rand.between(-40, 40);
+    const y0 = H + 6;
+    const y1 = H / 2;
+    const y2 = -6;
+    paths.push(`M ${r1(x0)} ${y0} Q ${r1(x1)} ${r1(y1)} ${r1(x2)} ${y2}`);
+    const twigs = rand.int(3, 5);
+    for (let k = 0; k < twigs; k++) {
+      const t = 0.2 + (0.6 / twigs) * k + rand.between(0, 0.08);
+      const bx = (1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * x1 + t * t * x2;
+      const by = (1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * y1 + t * t * y2;
+      const side = k % 2 === 0 ? 1 : -1;
+      const len = rand.between(12, 24);
+      const tx = bx + side * len;
+      const ty = by - len * rand.between(0.5, 0.9);
+      paths.push(
+        `M ${r1(bx)} ${r1(by)} Q ${r1(bx + side * len * 0.5)} ${r1(by)} ${r1(tx)} ${r1(ty)}`
+      );
+    }
+  }
+  return paths;
+}
+
 function Motif({ domain, seed }: { domain: Domain; seed: string }) {
   const rand = seeded(`${domain}:${seed}`);
   const ink = domainInkHex[domain];
@@ -139,6 +209,36 @@ function Motif({ domain, seed }: { domain: Domain; seed: string }) {
     return (
       <g stroke={ink} fill="none" strokeWidth={1.3} strokeLinecap="round" opacity={0.3}>
         {contours(rand).map((d, i) => (
+          <path key={i} d={d} />
+        ))}
+      </g>
+    );
+  }
+
+  if (domain === "circulariteit") {
+    return (
+      <g stroke={ink} fill="none" strokeWidth={1.5} strokeLinecap="round" opacity={0.3}>
+        {loops(rand).map((d, i) => (
+          <path key={i} d={d} />
+        ))}
+      </g>
+    );
+  }
+
+  if (domain === "veiligheid") {
+    return (
+      <g stroke={ink} fill="none" strokeWidth={1.1} opacity={0.28}>
+        {ripples(rand).map((c, i) => (
+          <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
+        ))}
+      </g>
+    );
+  }
+
+  if (domain === "milieu_natuur_ecologie") {
+    return (
+      <g stroke={ink} fill="none" strokeWidth={1.3} strokeLinecap="round" opacity={0.3}>
+        {branches(rand).map((d, i) => (
           <path key={i} d={d} />
         ))}
       </g>

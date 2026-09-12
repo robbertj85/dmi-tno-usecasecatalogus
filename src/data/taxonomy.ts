@@ -2,13 +2,15 @@
 // Taxonomy — labels and colours for the catalogue's facets.
 //
 // Hand-maintained. The generated ./usecases.ts never touches this file.
-// Colours follow the DMI palette already used in the methodieken app.
+// Colours follow the DMI palette already used in the methodieken app; the
+// three domains added with the consolidated report reuse the beleidsdomein
+// colours below (circulariteit, veiligheid, milieu) so the two stay in step.
 // ============================================================
 
 import type { Beleidsdomein, Domain, Niveau } from "./types";
 
 // ------------------------------------------------------------
-// Domein — one per source document
+// Domein — one per chapter of the source report
 // ------------------------------------------------------------
 
 export const domainLabels: Record<Domain, string> = {
@@ -16,6 +18,9 @@ export const domainLabels: Record<Domain, string> = {
   energie: "Energie",
   klimaatadaptatie: "Klimaatadaptatie",
   gezondheid: "Gezondheid & Welzijn",
+  circulariteit: "Circulariteit",
+  veiligheid: "Veiligheid",
+  milieu_natuur_ecologie: "Milieu, Natuur & Ecologie",
 };
 
 export const domainColors: Record<Domain, string> = {
@@ -23,6 +28,9 @@ export const domainColors: Record<Domain, string> = {
   energie: "bg-[#F2A900] text-[#004B87]",
   klimaatadaptatie: "bg-[#0091B3] text-white",
   gezondheid: "bg-[#5CB85C] text-white",
+  circulariteit: "bg-[#664575] text-white",
+  veiligheid: "bg-[#9B4945] text-white",
+  milieu_natuur_ecologie: "bg-[#4E6838] text-white",
 };
 
 export const domainHex: Record<Domain, string> = {
@@ -30,6 +38,9 @@ export const domainHex: Record<Domain, string> = {
   energie: "#F2A900",
   klimaatadaptatie: "#0091B3",
   gezondheid: "#5CB85C",
+  circulariteit: "#664575",
+  veiligheid: "#9B4945",
+  milieu_natuur_ecologie: "#4E6838",
 };
 
 /** Readable text colour on top of a solid `domainHex` fill. */
@@ -38,6 +49,9 @@ export const domainOnHex: Record<Domain, string> = {
   energie: "#00355F",
   klimaatadaptatie: "#FFFFFF",
   gezondheid: "#FFFFFF",
+  circulariteit: "#FFFFFF",
+  veiligheid: "#FFFFFF",
+  milieu_natuur_ecologie: "#FFFFFF",
 };
 
 export const domainBgLight: Record<Domain, string> = {
@@ -45,6 +59,9 @@ export const domainBgLight: Record<Domain, string> = {
   energie: "bg-[#FFF6E0]",
   klimaatadaptatie: "bg-[#E0F4F9]",
   gezondheid: "bg-[#E8F5E9]",
+  circulariteit: "bg-[#EFE9F2]",
+  veiligheid: "bg-[#F5EAE9]",
+  milieu_natuur_ecologie: "bg-[#EAF0E4]",
 };
 
 /** Same tints as `domainBgLight`, for SVG fills which cannot take a class. */
@@ -53,6 +70,9 @@ export const domainBgLightHex: Record<Domain, string> = {
   energie: "#FFF6E0",
   klimaatadaptatie: "#E0F4F9",
   gezondheid: "#E8F5E9",
+  circulariteit: "#EFE9F2",
+  veiligheid: "#F5EAE9",
+  milieu_natuur_ecologie: "#EAF0E4",
 };
 
 /** A darker companion to `domainHex`, for strokes that need to hold up on the tint. */
@@ -61,6 +81,9 @@ export const domainInkHex: Record<Domain, string> = {
   energie: "#B37F00",
   klimaatadaptatie: "#00708B",
   gezondheid: "#3D8B3D",
+  circulariteit: "#4D3359",
+  veiligheid: "#7A3733",
+  milieu_natuur_ecologie: "#3A4F2A",
 };
 
 export const domainBorderColors: Record<Domain, string> = {
@@ -68,6 +91,9 @@ export const domainBorderColors: Record<Domain, string> = {
   energie: "border-[#F2A900]",
   klimaatadaptatie: "border-[#0091B3]",
   gezondheid: "border-[#5CB85C]",
+  circulariteit: "border-[#664575]",
+  veiligheid: "border-[#9B4945]",
+  milieu_natuur_ecologie: "border-[#4E6838]",
 };
 
 // ------------------------------------------------------------
@@ -195,11 +221,15 @@ export const beleidsdomeinOrder: Beleidsdomein[] = [
   "economische_vitaliteit",
 ];
 
+/** Chapter order of the source report. */
 export const domainOrder: Domain[] = [
-  "mobiliteit",
   "energie",
+  "mobiliteit",
+  "circulariteit",
   "klimaatadaptatie",
   "gezondheid",
+  "veiligheid",
+  "milieu_natuur_ecologie",
 ];
 
 export const niveauOrder: Niveau[] = ["strategisch", "tactisch", "operationeel"];

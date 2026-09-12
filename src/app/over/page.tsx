@@ -15,9 +15,11 @@ import {
   domainLabels,
 } from "@/data/taxonomy";
 import {
+  bronDocument,
   bronnen,
   domainIntros,
   formaat,
+  ruimtelijkeOrdeningWonen,
   themas,
   uitgangspunt,
   useCases,
@@ -27,7 +29,7 @@ import type { Domain } from "@/data/types";
 export const metadata: Metadata = {
   title: "Over deze catalogus — DMI Use Cases Catalogus",
   description:
-    "Uitgangspunt, format en bronnen van de DMI use cases catalogus voor mobiliteit, energie, klimaatadaptatie en gezondheid & welzijn.",
+    "Uitgangspunt, format en bron van de DMI use cases catalogus voor energie, mobiliteit, circulariteit, klimaatadaptatie, gezondheid & welzijn, veiligheid en milieu, natuur & ecologie.",
 };
 
 /** The italic placeholder text in the format table is guidance, not content. */
@@ -109,7 +111,7 @@ export default function OverPage() {
               Rond de DMI-visie liggen acht beleidsdomeinen. Elke use case is
               gekoppeld aan de domeinen die aan het vraagstuk raken; op de
               pagina van een use case is deze figuur ingevuld met alleen die
-              domeinen. Dat maakt zichtbaar waar de vier catalogi elkaar
+              domeinen. Dat maakt zichtbaar waar de domeinen elkaar
               overlappen — de matrixweergave op de startpagina is daarop
               gebouwd.
             </p>
@@ -117,7 +119,7 @@ export default function OverPage() {
             <DomeinenFiguur className="w-full" />
 
             <p className="text-[11px] font-mono text-muted-foreground/70">
-              Figuur overgenomen uit de brondocumenten.
+              Figuur overgenomen uit het brondocument.
             </p>
 
             <div className="flex flex-wrap gap-1.5 pt-1">
@@ -140,15 +142,56 @@ export default function OverPage() {
             </div>
           </section>
 
-          {/* Bronnen per domein */}
+          {/* Ruimtelijke ordening & wonen: an approach, not a set of use cases */}
+          <section id="ruimtelijke-ordening" className="space-y-3 scroll-mt-20">
+            <h2 className="font-heading text-lg font-semibold text-foreground">
+              Ruimtelijke ordening &amp; wonen: de vijf stappen
+            </h2>
+            {ruimtelijkeOrdeningWonen.intro
+              .split("\n")
+              .filter(Boolean)
+              .map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="text-sm leading-relaxed text-muted-foreground"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            <ol className="rounded-lg border border-border/60 bg-white divide-y divide-border/60">
+              {ruimtelijkeOrdeningWonen.stappen.map((stap, index) => (
+                <li
+                  key={stap.naam}
+                  className="grid gap-1 p-3 sm:grid-cols-[2.5rem_minmax(0,14rem)_1fr] sm:gap-4"
+                >
+                  <span className="font-heading text-xl font-bold leading-none text-[#004B87]">
+                    {index + 1}
+                  </span>
+                  <span className="text-xs font-medium text-foreground">
+                    {stap.naam}
+                  </span>
+                  <span className="text-xs text-muted-foreground whitespace-pre-line">
+                    {stap.toelichting}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {/* Bron */}
           <section className="space-y-3">
             <h2 className="font-heading text-lg font-semibold text-foreground">
-              Bronnen
+              Bron
             </h2>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              De catalogus wordt gegenereerd uit de vier brondocumenten. Bij een
-              nieuwe versie van een document wordt de catalogus opnieuw
-              opgebouwd, zodat dit een levend document blijft.
+              De catalogus wordt gegenereerd uit het TNO-rapport{" "}
+              <span className="text-foreground">{bronDocument.titel}</span>{" "}
+              ({bronDocument.kenmerk}, {bronDocument.datum}). Bij een nieuwe
+              versie van het rapport wordt de catalogus opnieuw opgebouwd, zodat
+              dit een levend document blijft.
+            </p>
+            <p className="text-[10px] font-mono text-muted-foreground/60 break-all">
+              {bronDocument.document}
             </p>
 
             <div className="space-y-3">
@@ -158,7 +201,7 @@ export default function OverPage() {
                 const intro = domainIntros[domain];
                 return (
                   <article
-                    key={bron.document}
+                    key={domain}
                     className="rounded-lg border-l-4 border border-border/60 bg-white p-4"
                     style={{ borderLeftColor: domainHex[domain] }}
                   >
@@ -188,10 +231,6 @@ export default function OverPage() {
                         {intro}
                       </p>
                     )}
-
-                    <p className="mt-2 text-[10px] font-mono text-muted-foreground/60 break-all">
-                      {bron.document}
-                    </p>
                   </article>
                 );
               })}

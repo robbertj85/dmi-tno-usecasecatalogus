@@ -1,5 +1,13 @@
 import { Suspense } from "react";
-import { BarChart3, Compass, Database, HelpCircle, Lightbulb, Wrench } from "lucide-react";
+import {
+  BarChart3,
+  BookOpen,
+  Compass,
+  Database,
+  HelpCircle,
+  Lightbulb,
+  Wrench,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { BackToCatalogus, RelatedUseCases } from "@/components/catalogus-links";
 import { DomainIcon } from "@/components/domain-icon";
@@ -15,7 +23,7 @@ import {
   niveauColors,
   niveauLabels,
 } from "@/data/taxonomy";
-import { themas, useCases } from "@/data/usecases";
+import { bronDocument, themas, useCases } from "@/data/usecases";
 import type { UseCase } from "@/data/types";
 
 interface UseCaseDetailProps {
@@ -163,6 +171,55 @@ export function UseCaseDetail({ useCase }: UseCaseDetailProps) {
               accent={accent}
             />
 
+            {/* Prose the document adds after the table — rare, but kept whole. */}
+            {useCase.verdieping.length > 0 && (
+              <section>
+                <div
+                  className="mb-3 flex items-baseline gap-2 border-l-2 pl-3"
+                  style={{ borderColor: accent }}
+                >
+                  <BookOpen
+                    className="h-4 w-4 shrink-0 translate-y-0.5"
+                    style={{ color: accent }}
+                  />
+                  <h2 className="font-heading text-base font-semibold text-foreground">
+                    Verdieping
+                  </h2>
+                </div>
+                <div className="pl-3 space-y-5">
+                  {useCase.verdieping.map((blok, index) => (
+                    <div key={index}>
+                      {blok.kop && (
+                        <h3 className="mb-2 text-[13px] font-semibold text-foreground/80">
+                          {blok.kop}
+                        </h3>
+                      )}
+                      {blok.tekst.length === 1 ? (
+                        <p className="text-[15px] leading-7 text-foreground/80">
+                          {blok.tekst[0]}
+                        </p>
+                      ) : (
+                        <ul className="space-y-2">
+                          {blok.tekst.map((regel, i) => (
+                            <li
+                              key={i}
+                              className="relative pl-4 text-[15px] leading-7 text-foreground/80"
+                            >
+                              <span
+                                className="absolute left-0 top-[0.8em] h-1.5 w-1.5 rounded-full"
+                                style={{ backgroundColor: accent }}
+                              />
+                              {regel}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
             {/* The document's own "8 domeinen" figure, filled in for this use case. */}
             <section>
               <div
@@ -228,8 +285,11 @@ export function UseCaseDetail({ useCase }: UseCaseDetailProps) {
 
             <div>
               <MetaLabel>Bron</MetaLabel>
+              <p className="text-[13px] leading-6 text-foreground/75">
+                {bronDocument.titel}
+              </p>
               <p className="text-[11px] font-mono leading-5 text-muted-foreground break-words">
-                {useCase.bron.document}
+                {bronDocument.kenmerk} &middot; {bronDocument.datum}
               </p>
               <p className="mt-1 text-[11px] font-mono text-muted-foreground/70">
                 {bronStatusLabels[useCase.bron.status] ?? useCase.bron.status}

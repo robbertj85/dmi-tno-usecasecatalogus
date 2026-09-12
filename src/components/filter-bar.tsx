@@ -39,8 +39,8 @@ function FacetLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function FilterBar({ filters, onChange }: FilterBarProps) {
-  // Only offer thema's that belong to the selected domein — the four documents
-  // do not share thema's.
+  // Only offer thema's that belong to the selected domein — chapters do not
+  // share thema's.
   const themaOptions = themas.filter(
     (thema) => !filters.domain || thema.domain === filters.domain
   );

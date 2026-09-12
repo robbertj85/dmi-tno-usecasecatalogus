@@ -1,4 +1,4 @@
-import { CloudRain, HeartPulse, Route, Zap } from "lucide-react";
+import { CloudRain, HeartPulse, Leaf, Recycle, Route, ShieldCheck, Zap } from "lucide-react";
 import type { Domain } from "@/data/types";
 
 const icons: Record<Domain, React.ComponentType<{ className?: string }>> = {
@@ -6,6 +6,9 @@ const icons: Record<Domain, React.ComponentType<{ className?: string }>> = {
   energie: Zap,
   klimaatadaptatie: CloudRain,
   gezondheid: HeartPulse,
+  circulariteit: Recycle,
+  veiligheid: ShieldCheck,
+  milieu_natuur_ecologie: Leaf,
 };
 
 export function DomainIcon({

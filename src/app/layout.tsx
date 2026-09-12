@@ -24,7 +24,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "DMI Use Cases Catalogus",
   description:
-    "Catalogus van use cases binnen het DMI-Ecosysteem voor mobiliteit, energie, klimaatadaptatie en gezondheid & welzijn — van maatschappelijk vraagstuk naar benodigde functionaliteiten, analyses en data.",
+    "Catalogus van use cases binnen het DMI-Ecosysteem voor energie, mobiliteit, circulariteit, klimaatadaptatie, gezondheid & welzijn, veiligheid en milieu, natuur & ecologie — van maatschappelijk vraagstuk naar benodigde functionaliteiten, analyses en data.",
 };
 
 export default function RootLayout({

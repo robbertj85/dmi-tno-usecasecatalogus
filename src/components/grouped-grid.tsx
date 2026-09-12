@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight, Layers } from "lucide-react";
 import { DomainBanner } from "@/components/usecase-artwork";
 import { DomainIcon } from "@/components/domain-icon";
 import { UseCaseCard } from "@/components/usecase-card";
@@ -18,7 +20,7 @@ interface GroupedGridProps {
 
 /**
  * The catalogue's resting state: use cases under their domein and thema, the
- * way the four source documents are actually organised. A flat grid takes over
+ * way the source report is actually organised. A flat grid takes over
  * as soon as a filter narrows the set (see CardGrid).
  */
 export function GroupedGrid({ items, query }: GroupedGridProps) {
@@ -37,8 +39,8 @@ export function GroupedGrid({ items, query }: GroupedGridProps) {
           }))
           .filter((group) => group.useCases.length > 0);
 
-        // Documents without a thema level (gezondheid, klimaatadaptatie) list
-        // their use cases straight under the domein.
+        // A chapter without a thema level (gezondheid) lists its use cases
+        // straight under the domein.
         const loose = inDomain.filter((useCase) => !useCase.thema);
         if (loose.length > 0) {
           grouped.push({ key: `${domain}-overig`, label: "", useCases: loose });
@@ -103,6 +105,32 @@ export function GroupedGrid({ items, query }: GroupedGridProps) {
           </section>
         );
       })}
+
+      {/* The report's last chapter has no use-case tables, only an approach. */}
+      <section className="rounded-lg border border-dashed border-border bg-white/60 px-5 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-start gap-3 min-w-0">
+            <Layers className="mt-0.5 h-5 w-5 shrink-0 text-[#004B87]" />
+            <div className="min-w-0">
+              <h2 className="font-heading text-base font-semibold text-foreground">
+                Ruimtelijke ordening &amp; wonen
+              </h2>
+              <p className="text-[13px] leading-6 text-muted-foreground">
+                Geen losse use cases, maar een aanpak in vijf stappen waarin de
+                andere domeinen samenkomen en ruimtelijke claims tegen elkaar
+                worden afgewogen.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/over#ruimtelijke-ordening"
+            className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-[#004B87] hover:bg-muted transition-colors"
+          >
+            Bekijk de vijf stappen
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
